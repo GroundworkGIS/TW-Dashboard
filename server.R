@@ -39,7 +39,7 @@ refresh_reactive_data <- observe({
 shinyServer(function(input, output, session) {
   
   # Access
-  session_id = Sys.getpid()
+  session_id = session$token
   
   observe({
     userdata = filter(ACCESS$data, sid == session_id)

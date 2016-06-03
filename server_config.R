@@ -19,7 +19,7 @@ PMP_PERFORMANCE_HOURLY <- reactiveValues(data=list(), source="sde.pmp_performanc
 PMP_BOROUGHS <- reactiveValues(data=list())
 
 # Refresh
-REFRESH_INTERVAL <- 1 #minutes
+REFRESH_INTERVAL <- 60 #minutes
 #REFRESH_INTERVAL <- 3600 #seconds
 
 # Charts Layout
