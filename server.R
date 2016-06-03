@@ -47,8 +47,8 @@ shinyServer(function(input, output, session) {
     if (nrow(userdata) == 0) {
       ACCESS$data[nrow(ACCESS$data) + 1,] <<- c(session_id, "", "")
     }
-    
-    View(ACCESS$data)
+    #View(ACCESS$data)
+  
   })
   
   # CEO Performance
