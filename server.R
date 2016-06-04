@@ -19,7 +19,7 @@ refresh_reactive_data <- observe({
   
   # PMP_PERFORMANCE_DAILY
   PMP_PERFORMANCE_DAILY$data <<- pg_select(PMP_PERFORMANCE_DAILY$source)
-  
+
   # PMP_PERFORMANCE_HOURLY
   PMP_PERFORMANCE_HOURLY$data <<- pg_select(PMP_PERFORMANCE_HOURLY$source)
   
@@ -38,24 +38,16 @@ refresh_reactive_data <- observe({
 # Shinyserver
 shinyServer(function(input, output, session) {
   
-  # Access
-  session_id = session$token
-  
-  observe({
-    userdata = filter(ACCESS$data, sid == session_id)
-    
-    if (nrow(userdata) == 0) {
-      ACCESS$data[nrow(ACCESS$data) + 1,] <<- c(session_id, "", "")
-    }
-    #View(ACCESS$data)
-  
-  })
-  
+  # Check first run
+  check_firstrun <- reactiveValues(data = TRUE)
+  session$onFlushed(function() {check_firstrun$data <- FALSE}, once = TRUE)
+
   
   # CEO Performance
     
     # Data
     ceo_performance_data <- reactive({
+    
       ppd_daterange <- input$ceo_performance_date_filter
       ppd_borough   <- input$ceo_performance_borough_filter
       
@@ -74,7 +66,7 @@ shinyServer(function(input, output, session) {
                                rate_engaged      = sum(total_f2f)/sum(total_attempts),
                                rate_not_home     = sum(total_not_home)/sum(total_attempts),
                                rate_no_property  = sum(total_no_proerty_exists)/sum(total_attempts))
-      
+
     })
     
     # Chart: ceo_performance_chart
