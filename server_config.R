@@ -17,6 +17,7 @@ PMP_PERFORMANCE_HOURLY <- reactiveValues(data=list(), source="sde.pmp_performanc
 
 # Data variables
 PMP_BOROUGHS <- reactiveValues(data=list())
+#PPD_BY_USER  <- reactiveValues(data=list())
 
 # Refresh
 REFRESH_INTERVAL <- 60 #minutes

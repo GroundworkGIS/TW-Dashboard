@@ -45,8 +45,12 @@ body <- dashboardBody(
     #CEO Performance    
     tabItem(tabName = "tab1",
             fluidRow(
-              box(plotOutput("ceo_performance_chart", height=850))
-              #box(tableOutput("ceo_performance_table"))
+              box(title = "Engagement chart", solidHeader = TRUE, status = "primary", plotOutput("ceo_performance_chart", height=531)),
+              
+              tabBox(title = "Summary tables",
+                tabPanel("Values",dataTableOutput("ceo_performance_values_table")),
+                tabPanel("Values",dataTableOutput("ceo_performance_ratios_table"))
+              )
             )
     ),
     # 
@@ -69,7 +73,7 @@ body <- dashboardBody(
 dashboardPage(
   dashboardHeader(
     titleWidth = SIDEWIDTH,
-    title = "TW Dashboard"),
+    title = TITLE),
   sidebar,
   body
 )
