@@ -6,4 +6,5 @@
 # Client variables (globals)
 
 # Sidepanel width
+TITLE <- "TW Dashboard (Beta)"
 SIDEWIDTH <- 300

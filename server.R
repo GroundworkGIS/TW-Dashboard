@@ -80,11 +80,18 @@ shinyServer(function(input, output, session) {
         theme_minimal #+ coord_flip()
     })
     
-    # Table: ceo_performance_table
-    output$ceo_performance_table <- renderTable({
-      ceo_performance_data()
-    })
-  
+    # Table: Values
+    output$ceo_performance_values_table <- renderDataTable({
+      select(ceo_performance_data(), attempt_user, total_engaged, total_not_home, total_no_property)},
+      options = list(pageLength = 10, searching = FALSE, lengthMenu = list(c(10)))
+    )
+    
+    # Table: Ratios
+    output$ceo_performance_ratios_table <- renderDataTable({
+      select(ceo_performance_data(), attempt_user, rate_engaged, rate_not_home, rate_no_property)},
+      options = list(pageLength = 10, searching = FALSE, lengthMenu = list(c(10)))
+    )
+    
     # Dynamic option lists
     observe({
       c <- generate_choices(PMP_BOROUGHS$data)
