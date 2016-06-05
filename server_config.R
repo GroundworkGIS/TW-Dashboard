@@ -23,16 +23,6 @@ PMP_BOROUGHS <- reactiveValues(data=list())
 REFRESH_INTERVAL <- 60 #minutes
 #REFRESH_INTERVAL <- 3600 #seconds
 
-# Charts Layout
-theme_minimal <- theme(plot.title=element_text(hjust=0),
-                       panel.background=element_blank(),
-                       panel.grid.minor=element_blank(),
-                       panel.grid.major.x=element_line(colour="grey", linetype = "dashed"),
-                       panel.grid.major.y=element_blank(),
-                       axis.ticks.y=element_blank(),
-                       axis.ticks.x=element_blank(),
-                       legend.position="none")
-
 # Access
 ACCESS <- reactiveValues(data=data.frame(sid=character(), user=character(), role=character(), stringsAsFactors=FALSE))
 
