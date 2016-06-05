@@ -7,6 +7,7 @@ library(RPostgreSQL)
 library(shiny)
 library(dplyr)
 library(ggplot2)
+library(DT)
 source('db.R')
 source("server_config.R")
 source("server_functions.R")
@@ -48,8 +49,8 @@ shinyServer(function(input, output, session) {
     # Data
     ceo_performance_data <- reactive({
     
-      ppd_daterange <- input$ceo_performance_date_filter
-      ppd_borough   <- input$ceo_performance_borough_filter
+      ppd_daterange <- input$ceo_performance_date_ctrl
+      ppd_borough   <- input$ceo_performance_borough_ctrl
       
       filter_clause <- list(~attempts_date >= ppd_daterange[1], ~attempts_date <= ppd_daterange[2])
       if (ppd_borough != "All") filter_clause <- append(filter_clause, ~borough == ppd_borough)
@@ -69,33 +70,33 @@ shinyServer(function(input, output, session) {
 
     })
     
-    # Chart: ceo_performance_chart
-    output$ceo_performance_chart <- renderPlot({
-      ceos <- ceo_performance_data()$attempt_user
-      total_attempts <- ceo_performance_data()$total_attempts
+    # Chart: Performance Chart
+    output$ceo_performance_performance_chart <- renderPlot({
+      rows_to_show <- input$ceo_performance_performance_summary_rows_current
 
-      ggplot(data=ceo_performance_data(), aes(x=attempt_user, y=total_attempts)) +
-        geom_bar(stat="identity", colour="white") +
-        xlab("Total Attempts") + ylab("User") +
-        theme_minimal #+ coord_flip()
+      data <- ceo_performance_data()[rev(rows_to_show),]
+      data$attempt_user <- factor(data$attempt_user, levels = data$attempt_user) #lock sorting
+
+      ggplot(data, aes(x=attempt_user, y=total_engaged)) +
+        geom_bar(stat="identity", fill="steelblue") +
+        coord_flip() +
+        ylab("Engaged") +
+        theme(axis.title.y=element_blank())
+        #+ theme_minimal()
     })
     
-    # Table: Values
-    output$ceo_performance_values_table <- renderDataTable({
-      select(ceo_performance_data(), attempt_user, total_engaged, total_not_home, total_no_property)},
-      options = list(pageLength = 10, searching = FALSE, lengthMenu = list(c(10)))
+    # Table: Performance summary
+    output$ceo_performance_performance_summary <- DT::renderDataTable(
+      rename(select(ceo_performance_data(), attempt_user, total_engaged, total_not_home, total_no_property),
+      CEO=attempt_user, Engaged=total_engaged, "Not at home"=total_not_home, "No property"=total_no_property),
+      options = list(pageLength = 10, searching = FALSE, scrollCollapse = TRUE, bLengthChange = FALSE, bInfo = FALSE, lengthMenu = list(c(10))),
+      server = FALSE
     )
-    
-    # Table: Ratios
-    output$ceo_performance_ratios_table <- renderDataTable({
-      select(ceo_performance_data(), attempt_user, rate_engaged, rate_not_home, rate_no_property)},
-      options = list(pageLength = 10, searching = FALSE, lengthMenu = list(c(10)))
-    )
-    
+
     # Dynamic option lists
     observe({
       c <- generate_choices(PMP_BOROUGHS$data)
-      updateSelectInput(session, "ceo_performance_borough_filter", choices = c)
+      updateSelectInput(session, "ceo_performance_borough_ctrl", choices = c)
       cat("updated option list ", c, "\n")
     })
     
