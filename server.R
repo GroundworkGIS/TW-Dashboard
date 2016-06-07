@@ -4,10 +4,12 @@
 #
 
 library(RPostgreSQL)
+library(reshape2)
+library(ggplot2)
 library(shiny)
 library(dplyr)
-library(ggplot2)
 library(DT)
+
 source('db.R')
 source("server_config.R")
 source("server_functions.R")
@@ -72,17 +74,29 @@ shinyServer(function(input, output, session) {
     
     # Chart: Performance Chart
     output$ceo_performance_performance_chart <- renderPlot({
-      rows_to_show <- input$ceo_performance_performance_summary_rows_current
+      
+      rows_to_show <- rev(input$ceo_performance_performance_summary_rows_current)
+      
+      xlimit <- as.integer(summarise(ceo_performance_data(), max(total_not_home)))
+      data   <- ceo_performance_data()[rows_to_show,]
 
-      data <- ceo_performance_data()[rev(rows_to_show),]
+      
+      data$attempt_user <- gsub(" ", "\r\n", data$attempt_user)
       data$attempt_user <- factor(data$attempt_user, levels = data$attempt_user) #lock sorting
+      
+      data <- select(data, attempt_user, total_no_property, total_not_home, total_engaged)
+      data <- melt(data, id.vars = c("attempt_user"),
+                   variable.name = "type")
 
-      ggplot(data, aes(x=attempt_user, y=total_engaged)) +
-        geom_bar(stat="identity", fill="steelblue") +
-        coord_flip() +
-        ylab("Engaged") +
-        theme(axis.title.y=element_blank())
-        #+ theme_minimal()
+      ggplot(data, aes(x=attempt_user, y=value, fill=type)) +
+        geom_bar(stat="identity", show.legend = FALSE, position = position_dodge())+
+        scale_fill_brewer()+
+        theme_minimal()+
+        theme(axis.title.x=element_blank())+
+        theme(axis.title.y=element_blank())+
+        scale_y_continuous(limits = c(0, xlimit))+
+        coord_flip()
+        
     })
     
     # Table: Performance summary

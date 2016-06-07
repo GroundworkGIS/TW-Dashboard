@@ -13,7 +13,3 @@ convertMenuItem <- function(mi,tabName) {
   mi
 }
 
-#generate_choices
-#generate_choices <- function(l) {
-#  return(append("All", l))
-#}

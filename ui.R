@@ -25,7 +25,7 @@ sidebar <- dashboardSidebar(
     convertMenuItem(menuItem("CEO Performance", tabName = "tab1",
     
                              icon = icon("bar-chart"),
-                             dateRangeInput("ceo_performance_date_ctrl", "Filter by Date", start = "2015-12-01", end = Sys.Date(), format="dd/mm/yyyy"),
+                             dateRangeInput("ceo_performance_date_ctrl", "Filter by Date", start = STARTDATE, format="dd/mm/yyyy"),
                              selectInput("ceo_performance_borough_ctrl", "Filter by Borough", choices = list("All")),
                              radioButtons("ceo_performance_view_ctrl", "Switch View", c("Values"= "values", "Ratios" = "ratios"))
                              #htmlOutput("ceo_performance_borough_filter_server")
@@ -34,14 +34,14 @@ sidebar <- dashboardSidebar(
     convertMenuItem(menuItem("Time Performance", tabName = "tab2",
                              
                              icon = icon("clock-o"),
-                             dateRangeInput("time_performance_date_ctrl", "A test control", start = "2015-12-01", end = Sys.Date(), format="dd/mm/yyyy")                             
+                             dateRangeInput("time_performance_date_ctrl", "A test control", start = STARTDATE, format="dd/mm/yyyy")                             
                              ),tabName = "tab2"),
 
     
     convertMenuItem(menuItem("Forward Planning", tabName = "tab3",
                              
                              icon = icon("calendar"),
-                             dateRangeInput("forward_planning_date_ctrl", "A test control", start = "2015-12-01", end = Sys.Date(), format="dd/mm/yyyy")                                                          
+                             dateRangeInput("forward_planning_date_ctrl", "A test control", start = STARTDATE, format="dd/mm/yyyy")                                                          
                              ),tabName = "tab3")                          
   )
 )
