@@ -32,8 +32,8 @@ if (!DB) {
       convertMenuItem(menuItem("CEO Performance", tabName = "tab1",
       
                                icon = icon("bar-chart"),
-                               dateRangeInput("ceo_performance_date_ctrl", "Date range", start = STARTDATE, format="dd/mm/yyyy"),
-                               selectInput("ceo_performance_borough_ctrl", "Borough", choices = list("All")),
+                               dateRangeInput("ceo_performance_date_ctrl", "Date Range", start = STARTDATE, format="dd/mm/yyyy"),
+                               selectInput("ceo_performance_borough_ctrl", "Filter Borough", choices = list("All")),
                                radioButtons("ceo_performance_view_ctrl", "Switch View", c("Values"= "values", "Ratios" = "ratios"))
                                #htmlOutput("ceo_performance_borough_filter_server")
                                ),tabName = "tab1"),

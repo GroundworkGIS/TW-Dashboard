@@ -70,9 +70,9 @@ if (!DB) {
                   total_engaged     = sum(total_f2f),
                   total_not_home    = sum(total_not_home),
                   total_no_property = sum(total_no_proerty_exists),
-                  rate_engaged      = round( (sum(total_f2f)/sum(total_attempts)) * 100, digits=2),
-                  rate_not_home     = round( (sum(total_not_home)/sum(total_attempts)) * 100, digits=2),
-                  rate_no_property  = round( (sum(total_no_proerty_exists)/sum(total_attempts)) * 100, digits=2))
+                  rate_engaged      = percentage(sum(total_f2f)/sum(total_attempts)),
+                  rate_not_home     = percentage(sum(total_not_home)/sum(total_attempts)),
+                  rate_no_property  = percentage(sum(total_no_proerty_exists)/sum(total_attempts)))
 
       })
       
@@ -88,29 +88,31 @@ if (!DB) {
           fields <- c( "total_engaged",  "total_not_home", "total_no_property")
           labels <- c( "Engaged", "Not at home", "No property")
           position = position_dodge()
-          isratio = FALSE
+          chart = "GROUPED"
           direction = 1
         
         } else {
+          
           # ratios
           xlimit <- 100
           fields <- c("rate_engaged",  "rate_not_home", "rate_no_property")
           labels <- c( "Engaged", "Not at home", "No property")
           position = position_stack()
-          isratio = TRUE
+          chart = "STACKED"
           direction = -1
         }
         
-        data <- prep_barchart_data(data, "attempt_user", fields, labels, ratio=isratio) 
+        data <- prep_barchart_data(data, "attempt_user", fields, labels, chart=chart) 
         
 
         ggplot(data, aes(x=attempt_user, y=value, fill=reorder(type, order))) +
           geom_bar(stat="identity", show.legend = TRUE, position = position)+
-          scale_fill_brewer(direction = direction)+
+          scale_fill_brewer(direction = direction, breaks = labels)+
+          scale_y_continuous(limits = c(0, xlimit), expand = c(0,0))+
           theme_minimal()+
           theme(axis.title.x=element_blank())+
           theme(axis.title.y=element_blank())+
-          scale_y_continuous(limits = c(0, xlimit))+
+          theme(legend.position="top")+
           labs(fill="")+
           coord_flip()
           
@@ -118,7 +120,7 @@ if (!DB) {
       
       # Table: Performance summary
       output$ceo_performance_performance_summary <- DT::renderDataTable({
-          print(input$ceo_performance_view_ctrl)        
+          
           if (input$ceo_performance_view_ctrl == "values") {
             data <- rename(select(ceo_performance_data(), attempt_user, total_engaged, total_not_home, total_no_property),
                            CEO=attempt_user, Engaged=total_engaged, "Not at home"=total_not_home, "No property"=total_no_property)
@@ -127,7 +129,14 @@ if (!DB) {
                            CEO=attempt_user, Engaged=rate_engaged, "Not at home"=rate_not_home, "No property"=rate_no_property)
           }
         
-          
+          #rename(ceo_performance_data(),
+          #       CEO = attempt_user,
+          #       Engaged = total_engaged,
+          #       "Not at home" = total_not_home,
+          #       "No property" = total_no_property,
+          #       Engaged = rate_engaged,
+          #       "Not at home" = rate_not_home,
+          #       "No property" = rate_no_property)
         },
         options = list(pageLength = 10, searching = FALSE, scrollCollapse = TRUE, bLengthChange = FALSE, bInfo = FALSE),
         server = FALSE

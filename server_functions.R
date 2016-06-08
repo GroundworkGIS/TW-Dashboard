@@ -43,19 +43,23 @@ generate_choices <- function(l) {
 
 
 
-prep_barchart_data <- function(d, x, s=c(), l=C(), ratio=FALSE) {
+prep_barchart_data <- function(d, x, s=c(), l=C(), chart='GROUPED') {
   # prep_barchart_data(d, f, s=list())
   # perpare data for barchart plot
   # d (data.frame), the data
   # x (string), x axis column name
-  # s (list), fields subset - must NOT include f
+  # s (vec), fields subset - must NOT include x
+  # d (vec), fields subset labels
+  # chart (string), type of chart: GROUPED, STACKED
   # returns data.frame(type,value)
   
   d[[x]] <- gsub(" ", "\r\n", d[[x]])
   d[[x]] <- factor(d[[x]], levels = d[[x]]) #lock sorting
 
-  if (ratio == FALSE) {
-    s <- rev(s)
+  if (chart == "STACKED") {
+    o <- s
+  } else {
+    o <- rev(s)
   }
   
   if (length(s) > 0) {
@@ -84,13 +88,9 @@ prep_barchart_data <- function(d, x, s=c(), l=C(), ratio=FALSE) {
         variable.name = "type")
   
   if (length(s) > 0) {
-    d <- mutate(d, order = match(type, s))
+    d <- mutate(d, order = match(type, o))
   }
   
-  if (ratio == FALSE) {
-    s <- rev(s)
-  }
-
   if (length(l) > 0) {
     d <- mutate(d, type = l[match(type, s)])
   } 
@@ -102,4 +102,11 @@ prep_barchart_data <- function(d, x, s=c(), l=C(), ratio=FALSE) {
 
 rename_columns <- function(d, n) {
   # rename column
+}
+
+
+
+percentage <- function(n, d=2) {
+  # percentage maker
+  round(n*100, digits=d)
 }
