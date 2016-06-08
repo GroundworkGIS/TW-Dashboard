@@ -1,0 +1,7 @@
+##TODO#
+
+
+- Enhance "Switch View" (dataTable to switch client side)
+- Add Title with description of current view
+- Fix resizing for dataTable
+- Fix resizing for chart when toggling sidebar

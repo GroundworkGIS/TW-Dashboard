@@ -5,6 +5,11 @@
 
 # Client variables (globals)
 
-# Sidepanel width
+# App title
 TITLE <- "TW Dashboard (Beta)"
+
+# Sidepanel width
 SIDEWIDTH <- 300
+
+# Start in date range elements
+STARTDATE = "2015-12-01"
