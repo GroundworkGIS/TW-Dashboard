@@ -37,6 +37,69 @@ generate_choices <- function(l) {
   # add All on top of option lists
   # returns list
   
+  #return
   append("All", l)
 }
 
+
+
+prep_barchart_data <- function(d, x, s=c(), l=C(), ratio=FALSE) {
+  # prep_barchart_data(d, f, s=list())
+  # perpare data for barchart plot
+  # d (data.frame), the data
+  # x (string), x axis column name
+  # s (list), fields subset - must NOT include f
+  # returns data.frame(type,value)
+  
+  d[[x]] <- gsub(" ", "\r\n", d[[x]])
+  d[[x]] <- factor(d[[x]], levels = d[[x]]) #lock sorting
+
+  if (ratio == FALSE) {
+    s <- rev(s)
+  }
+  
+  if (length(s) > 0) {
+    d <- select(d, one_of(c(x,s)))
+  }
+
+  
+  # if (ratio == TRUE) {
+  #   m <- 0
+  #   for(i in 1:(length(d)-1)) {
+  #     
+  #     n <- i + 1
+  #     
+  #     
+  #     if (is.numeric(d[[i]])) {
+  #       m <- i
+  #     }
+  #     
+  #     if (is.numeric(d[[n]]) & m>0) {
+  #       d[[n]] <- d[[n]] + d[[m]] 
+  #     }
+  #   }
+  # }
+  
+  d <- melt(d, id.vars = c(x),
+        variable.name = "type")
+  
+  if (length(s) > 0) {
+    d <- mutate(d, order = match(type, s))
+  }
+  
+  if (ratio == FALSE) {
+    s <- rev(s)
+  }
+
+  if (length(l) > 0) {
+    d <- mutate(d, type = l[match(type, s)])
+  } 
+  
+  return(d)
+}
+
+
+
+rename_columns <- function(d, n) {
+  # rename column
+}

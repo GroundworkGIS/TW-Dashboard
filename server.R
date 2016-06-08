@@ -15,8 +15,7 @@ source("server_functions.R")
 
 # db.R
 if (!DB) {
-  shinyServer(function(input, output) {
-  })
+  shinyServer(function(input, output) {})
 } else {
 
   
@@ -29,7 +28,7 @@ if (!DB) {
     PMP_PERFORMANCE_DAILY$data <<- pg_select(PMP_PERFORMANCE_DAILY$source)
   
     # PMP_PERFORMANCE_HOURLY
-    PMP_PERFORMANCE_HOURLY$data <<- pg_select(PMP_PERFORMANCE_HOURLY$source)
+    #PMP_PERFORMANCE_HOURLY$data <<- pg_select(PMP_PERFORMANCE_HOURLY$source)
     
     # BOROUGHS
     boroughs = distinct(select(PMP_PERFORMANCE_DAILY$data, borough))
@@ -66,49 +65,71 @@ if (!DB) {
         
         ppd_grouped <- group_by(ppd_filtered, attempt_user)
         
-        ppd_by_user <- summarise(ppd_grouped,
-                                 total_attempts    = sum(total_attempts),
-                                 total_engaged     = sum(total_f2f),
-                                 total_not_home    = sum(total_not_home),
-                                 total_no_property = sum(total_no_proerty_exists),
-                                 rate_engaged      = sum(total_f2f)/sum(total_attempts),
-                                 rate_not_home     = sum(total_not_home)/sum(total_attempts),
-                                 rate_no_property  = sum(total_no_proerty_exists)/sum(total_attempts))
-  
+        summarise(ppd_grouped,
+                  total_attempts    = sum(total_attempts),
+                  total_engaged     = sum(total_f2f),
+                  total_not_home    = sum(total_not_home),
+                  total_no_property = sum(total_no_proerty_exists),
+                  rate_engaged      = round( (sum(total_f2f)/sum(total_attempts)) * 100, digits=2),
+                  rate_not_home     = round( (sum(total_not_home)/sum(total_attempts)) * 100, digits=2),
+                  rate_no_property  = round( (sum(total_no_proerty_exists)/sum(total_attempts)) * 100, digits=2))
+
       })
       
       # Chart: Performance Chart
       output$ceo_performance_performance_chart <- renderPlot({
         
         rows_to_show <- rev(input$ceo_performance_performance_summary_rows_current)
+        data <- ceo_performance_data()[rows_to_show,]
         
-        xlimit <- as.integer(summarise(ceo_performance_data(), max(total_not_home)))
-        data   <- ceo_performance_data()[rows_to_show,]
-  
+        if (input$ceo_performance_view_ctrl == "values") {
+          
+          xlimit <- as.integer(summarise(ceo_performance_data(), max(total_not_home)))  
+          fields <- c( "total_engaged",  "total_not_home", "total_no_property")
+          labels <- c( "Engaged", "Not at home", "No property")
+          position = position_dodge()
+          isratio = FALSE
+          direction = 1
         
-        data$attempt_user <- gsub(" ", "\r\n", data$attempt_user)
-        data$attempt_user <- factor(data$attempt_user, levels = data$attempt_user) #lock sorting
+        } else {
+          # ratios
+          xlimit <- 100
+          fields <- c("rate_engaged",  "rate_not_home", "rate_no_property")
+          labels <- c( "Engaged", "Not at home", "No property")
+          position = position_stack()
+          isratio = TRUE
+          direction = -1
+        }
         
-        data <- select(data, attempt_user, total_no_property, total_not_home, total_engaged)
-        data <- melt(data, id.vars = c("attempt_user"),
-                     variable.name = "type")
-  
-        ggplot(data, aes(x=attempt_user, y=value, fill=type)) +
-          geom_bar(stat="identity", show.legend = FALSE, position = position_dodge())+
-          scale_fill_brewer()+
+        data <- prep_barchart_data(data, "attempt_user", fields, labels, ratio=isratio) 
+        
+
+        ggplot(data, aes(x=attempt_user, y=value, fill=reorder(type, order))) +
+          geom_bar(stat="identity", show.legend = TRUE, position = position)+
+          scale_fill_brewer(direction = direction)+
           theme_minimal()+
           theme(axis.title.x=element_blank())+
           theme(axis.title.y=element_blank())+
           scale_y_continuous(limits = c(0, xlimit))+
+          labs(fill="")+
           coord_flip()
           
       })
       
       # Table: Performance summary
-      output$ceo_performance_performance_summary <- DT::renderDataTable(
-        rename(select(ceo_performance_data(), attempt_user, total_engaged, total_not_home, total_no_property),
-        CEO=attempt_user, Engaged=total_engaged, "Not at home"=total_not_home, "No property"=total_no_property),
-        options = list(pageLength = 10, searching = FALSE, scrollCollapse = TRUE, bLengthChange = FALSE, bInfo = FALSE, lengthMenu = list(c(10))),
+      output$ceo_performance_performance_summary <- DT::renderDataTable({
+          print(input$ceo_performance_view_ctrl)        
+          if (input$ceo_performance_view_ctrl == "values") {
+            data <- rename(select(ceo_performance_data(), attempt_user, total_engaged, total_not_home, total_no_property),
+                           CEO=attempt_user, Engaged=total_engaged, "Not at home"=total_not_home, "No property"=total_no_property)
+          } else {
+            data <- rename(select(ceo_performance_data(), attempt_user, rate_engaged, rate_not_home, rate_no_property),
+                           CEO=attempt_user, Engaged=rate_engaged, "Not at home"=rate_not_home, "No property"=rate_no_property)
+          }
+        
+          
+        },
+        options = list(pageLength = 10, searching = FALSE, scrollCollapse = TRUE, bLengthChange = FALSE, bInfo = FALSE),
         server = FALSE
       )
   

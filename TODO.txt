@@ -2,6 +2,7 @@
 
 
 - Stacked bar chart showing engaged, not engaged, no property (values)
+- Position Legend somewhere
 - Stacked bar chart 100% (ratios)
 - Enable "Switch View" control
 - Add Title with description of current view
