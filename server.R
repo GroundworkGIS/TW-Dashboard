@@ -82,11 +82,12 @@ if (!DB) {
         rows_to_show <- rev(input$ceo_performance_performance_summary_rows_current)
         data <- ceo_performance_data()[rows_to_show,]
         
+        labels <- c( "Engaged", "Not at home", "No property")
+        
         if (input$ceo_performance_view_ctrl == "values") {
           
           xlimit <- as.integer(summarise(ceo_performance_data(), max(total_not_home)))  
           fields <- c( "total_engaged",  "total_not_home", "total_no_property")
-          labels <- c( "Engaged", "Not at home", "No property")
           position = position_dodge()
           chart = "GROUPED"
           direction = 1
@@ -96,7 +97,6 @@ if (!DB) {
           # ratios
           xlimit <- 100
           fields <- c("rate_engaged",  "rate_not_home", "rate_no_property")
-          labels <- c( "Engaged", "Not at home", "No property")
           position = position_stack()
           chart = "STACKED"
           direction = -1
