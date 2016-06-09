@@ -20,10 +20,11 @@ PMP_BOROUGHS <- reactiveValues(data=list())
 PMP_PERFORMANCE_DAILY_STATS <- reactiveValues(data=list())
 #PPD_BY_USER  <- reactiveValues(data=list())
 
-# Headers
-CEO_PERFORMANCE_DATA_HEADER <- data.frame(
-  fieldnames = c("total_engaged", "total_not_home", "total_no_property", "rate_engaged", "rate_not_home", "rate_no_property"),
-  labels     = c("Engaged", "Not at home", "No property", "Engaged", "Not at home", "No property"))
+# Labels
+#CEO_PERFORMANCE_DATA_HEADER <- data.frame(
+#  fieldnames = c("total_engaged", "total_not_home", "total_no_property", "rate_engaged", "rate_not_home", "rate_no_property"),
+#  labels     = c("Engaged", "Not at home", "No property", "Engaged", "Not at home", "No property"))
+CEO_PERFORMANCE_CHART_LABELS <- reactiveValues(data=c( "Engaged", "Not at home", "No property"))
 
 # Refresh
 REFRESH_INTERVAL <- 60 #minutes
