@@ -29,6 +29,12 @@ if (!DB) {
   sidebar <- dashboardSidebar(
     width = SIDEWIDTH,
     sidebarMenu(
+      convertMenuItem(menuItem("Overview", tabName = "tab0",
+                               
+                               icon = icon("calendar"),
+                               dateRangeInput("forward_planning_date_ctrl", "A test control", start = STARTDATE, format="dd/mm/yyyy")                                                          
+                               ),tabName = "tab0"),
+      
       convertMenuItem(menuItem("CEO Performance", tabName = "tab1",
       
                                icon = icon("bar-chart"),
@@ -60,7 +66,12 @@ if (!DB) {
   body <- dashboardBody(
     CustomCss,
     tabItems(
-  
+
+      #Forward Planning
+      tabItem(tabName = "tab0"
+              
+      ),
+      
       #CEO Performance    
       tabItem(tabName = "tab1",
               fluidRow(
@@ -68,7 +79,7 @@ if (!DB) {
                 box(title = "Performance Chart", solidHeader = TRUE, status = "primary", plotOutput("ceo_performance_performance_chart", height=500))
               )
       ),
-      # 
+
       #Time Performance
       tabItem(tabName = "tab2"
   
