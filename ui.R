@@ -31,7 +31,7 @@ if (!DB) {
     sidebarMenu(
       convertMenuItem(menuItem("Overview", tabName = "tab0",
                                
-                               icon = icon("calendar"),
+                               icon = icon("line-chart"),
                                dateRangeInput("forward_planning_date_ctrl", "A test control", start = STARTDATE, format="dd/mm/yyyy")                                                          
                                ),tabName = "tab0"),
       
