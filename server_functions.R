@@ -66,24 +66,6 @@ prep_barchart_data <- function(d, x, s=c(), l=C(), chart='GROUPED') {
     d <- select(d, one_of(c(x,s)))
   }
 
-  
-  # if (ratio == TRUE) {
-  #   m <- 0
-  #   for(i in 1:(length(d)-1)) {
-  #     
-  #     n <- i + 1
-  #     
-  #     
-  #     if (is.numeric(d[[i]])) {
-  #       m <- i
-  #     }
-  #     
-  #     if (is.numeric(d[[n]]) & m>0) {
-  #       d[[n]] <- d[[n]] + d[[m]] 
-  #     }
-  #   }
-  # }
-  
   d <- melt(d, id.vars = c(x),
         variable.name = "type")
   
