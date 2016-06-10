@@ -92,3 +92,18 @@ percentage <- function(n, d=2) {
   # percentage maker
   round(n*100, digits=d)
 }
+
+
+xlimit <- function(c, v=0) {
+  # finds max or returns v
+  # c(vec)
+  # v(int)
+  
+  r <- max(c)
+  if (!is.finite(r)) r <- v
+  
+  #returns
+  r
+}
+
+

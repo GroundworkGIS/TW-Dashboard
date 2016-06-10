@@ -20,7 +20,15 @@ if (!DB) {
   
   # Custom CSS
   CustomCss <- tags$head(tags$style(HTML('
-
+    .box-transparent {
+        background-color: transparent;
+        border-top: none;
+        box-shadow: none;
+        padding-bottom: 15px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+    }
   ')))
   
   
@@ -29,10 +37,10 @@ if (!DB) {
   sidebar <- dashboardSidebar(
     width = SIDEWIDTH,
     sidebarMenu(
-      convertMenuItem(menuItem("Overview", tabName = "tab0",
+      convertMenuItem(menuItem("Overview", tabName = "tab0", 
                                
-                               icon = icon("line-chart"),
-                               dateRangeInput("forward_planning_date_ctrl", "A test control", start = STARTDATE, format="dd/mm/yyyy")                                                          
+                               icon = icon("line-chart"), 
+                               div()
                                ),tabName = "tab0"),
       
       convertMenuItem(menuItem("CEO Performance", tabName = "tab1",
@@ -41,20 +49,19 @@ if (!DB) {
                                dateRangeInput("ceo_performance_date_ctrl", "Date Range", start = STARTDATE, format="dd/mm/yyyy"),
                                selectInput("ceo_performance_borough_ctrl", "Filter Borough", choices = list("All")),
                                radioButtons("ceo_performance_view_ctrl", "Switch View", c("Values"= "values", "Ratios" = "ratios"))
-                               #htmlOutput("ceo_performance_borough_filter_server")
                                ),tabName = "tab1"),
       
       convertMenuItem(menuItem("Time Performance", tabName = "tab2",
                                
                                icon = icon("clock-o"),
-                               dateRangeInput("time_performance_date_ctrl", "A test control", start = STARTDATE, format="dd/mm/yyyy")                             
+                               div()
                                ),tabName = "tab2"),
   
       
       convertMenuItem(menuItem("Forward Planning", tabName = "tab3",
                                
                                icon = icon("calendar"),
-                               dateRangeInput("forward_planning_date_ctrl", "A test control", start = STARTDATE, format="dd/mm/yyyy")                                                          
+                               div()
                                ),tabName = "tab3")                          
     )
   )
@@ -74,9 +81,16 @@ if (!DB) {
       
       #CEO Performance    
       tabItem(tabName = "tab1",
+              fluidRow(tags$div(class = "box-transparent",
+                  "CEO Performance"
+              )),
+
               fluidRow(
-                box(title = "Performance Summary", solidHeader = TRUE, status = "primary", DT::dataTableOutput("ceo_performance_performance_summary"), height=500+62),
-                box(title = "Performance Chart", solidHeader = TRUE, status = "primary", plotOutput("ceo_performance_performance_chart", height=500))
+                box(title = "Performance Summary", 
+                    solidHeader = TRUE, status = "primary", DT::dataTableOutput("ceo_performance_performance_summary"), height=650+62),
+                
+                box(title = "Performance Chart",
+                    solidHeader = TRUE, status = "primary", plotOutput("ceo_performance_performance_chart", height=650))
               )
       ),
 

@@ -73,8 +73,6 @@ if (!DB) {
                   rate_engaged      = percentage(sum(total_f2f)/sum(total_attempts)),
                   rate_not_home     = percentage(sum(total_not_home)/sum(total_attempts)),
                   rate_no_property  = percentage(sum(total_no_proerty_exists)/sum(total_attempts)))
-        
-
       })
 
 
@@ -87,8 +85,7 @@ if (!DB) {
           labels <- CEO_PERFORMANCE_CHART_LABELS$data
 
           if (input$ceo_performance_view_ctrl == "values") {
-            xlimit <- max(ceo_performance_data()$total_attempts)
-            if (!is.finite(xlimit)) {xlimit = 0}
+            xlimit <- xlimit(ceo_performance_data()$total_attempts)
             fields <- c( "total_engaged",  "total_not_home", "total_no_property")
             position = position_dodge()
             chart = "GROUPED"
@@ -123,8 +120,8 @@ if (!DB) {
       output$ceo_performance_performance_summary <- DT::renderDataTable({
           
           if (input$ceo_performance_view_ctrl == "values") {
-            data <- rename(select(ceo_performance_data(), attempt_user, total_engaged, total_not_home, total_no_property),
-                           CEO=attempt_user, Engaged=total_engaged, "Not at home"=total_not_home, "No property"=total_no_property)
+            data <- rename(select(ceo_performance_data(), attempt_user, total_engaged, total_not_home, total_no_property, total_attempts),
+                           CEO=attempt_user, Engaged=total_engaged, "Not at home"=total_not_home, "No property"=total_no_property, "Total"=total_attempts)
           } else {
             data <- rename(select(ceo_performance_data(), attempt_user, rate_engaged, rate_not_home, rate_no_property),
                            CEO=attempt_user, Engaged=rate_engaged, "Not at home"=rate_not_home, "No property"=rate_no_property)
@@ -139,7 +136,13 @@ if (!DB) {
           #       "Not at home" = rate_not_home,
           #       "No property" = rate_no_property)
         },
-        options = list(pageLength = 10, searching = FALSE, scrollCollapse = TRUE, bLengthChange = FALSE, bInfo = FALSE),
+        options = list(pageLength = TABLE_MAX_ROWS,
+                       searching = FALSE,
+                       bLengthChange = FALSE,
+                       scrollY = 500,
+                       scrollCollapse = TRUE,
+                       bInfo = FALSE,
+                       columnDefs = list(list(visible = FALSE, targets = 0))),
         server = FALSE
       )
   

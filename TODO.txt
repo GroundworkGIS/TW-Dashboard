@@ -1,7 +1,14 @@
 ##TODO#
 
+- rewording variables to camel case
 
-- Enhance "Switch View" (dataTable to switch client side)
+
+CEO Performance: 
+- enhance "Switch View" (dataTable hide/show field client side, chart keeps same current data)
 - Add Title with description of current view
-- Fix resizing for dataTable
-- Fix resizing for chart when toggling sidebar
+- Fix resizing dataTable
+- Fix resizing chart when toggling sidebar off (and on)
+- Restructure ceo_performance_data to reactiveValue: (data, summary=list(mean.field1, sum.field1, mean.field2, sum.field2, etc...))
+
+
+Time Performance:

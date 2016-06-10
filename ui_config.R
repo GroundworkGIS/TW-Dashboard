@@ -13,3 +13,6 @@ SIDEWIDTH <- 300
 
 # Start in date range elements
 STARTDATE = "2015-12-01"
+
+# Table number of rows
+TABLE_MAX_ROWS = 15
