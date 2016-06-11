@@ -9,7 +9,7 @@
 TITLE <- "TW Dashboard (Beta)"
 
 # Sidepanel width
-SIDEWIDTH <- 300
+SIDEWIDTH <- 250
 
 # Start in date range elements
 STARTDATE = "2015-12-01"
