@@ -94,6 +94,7 @@ percentage <- function(n, d=2) {
 }
 
 
+
 xlimit <- function(c, v=0) {
   # finds max or returns v
   # c(vec)
@@ -107,3 +108,23 @@ xlimit <- function(c, v=0) {
 }
 
 
+
+setChart <- function(t, p="DEFAULT") {
+  # t type
+  # p palette name
+  
+  p <- paste("PALETTE_", toupper(p), sep = "")
+  c <- eval(parse(text = p))
+  
+  if (t == "GROUPED") {
+    a = 1
+    b = position_dodge()
+    c = rev(c)
+    
+  } else if (t == "STACKED") {
+    a = -1
+    b = position_stack()
+  }
+  
+  list(type = t, direction = a, position = b, palette = c)
+}

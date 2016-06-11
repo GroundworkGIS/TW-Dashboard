@@ -85,27 +85,25 @@ if (!DB) {
           labels <- CEO_PERFORMANCE_CHART_LABELS$data
 
           if (input$ceo_performance_view_ctrl == "values") {
+            
+            #values
             xlimit <- xlimit(ceo_performance_data()$total_attempts)
             fields <- c( "total_engaged",  "total_not_home", "total_no_property")
-            position = position_dodge()
-            chart = "GROUPED"
-            direction = 1
+            chart <- setChart("GROUPED", "reds")
 
           } else {
 
             # ratios
             xlimit <- 100
             fields <- c("rate_engaged",  "rate_not_home", "rate_no_property")
-            position = position_stack()
-            chart = "STACKED"
-            direction = -1
+            chart <- setChart("STACKED", "reds")
           }
 
-          data <- prep_barchart_data(data, "attempt_user", fields, labels, chart=chart)
+          data <- prep_barchart_data(data, "attempt_user", fields, labels, chart=chart$type)
 
         ggplot(data, aes(x=attempt_user, y=value, fill=reorder(type, order))) +
-          geom_bar(stat="identity", show.legend = TRUE, position = position)+
-          scale_fill_brewer(direction = direction, breaks = labels)+
+          geom_bar(stat="identity", show.legend = TRUE, position = chart$position)+
+          scale_fill_manual(values=chart$palette, breaks = labels)+
           scale_y_continuous(limits = c(0, xlimit), expand = c(0,0))+
           theme_minimal()+
           theme(axis.title.x=element_blank())+
@@ -124,25 +122,19 @@ if (!DB) {
                            CEO=attempt_user, Engaged=total_engaged, "Not at home"=total_not_home, "No property"=total_no_property, "Total"=total_attempts)
           } else {
             data <- rename(select(ceo_performance_data(), attempt_user, rate_engaged, rate_not_home, rate_no_property),
-                           CEO=attempt_user, Engaged=rate_engaged, "Not at home"=rate_not_home, "No property"=rate_no_property)
+                           CEO=attempt_user, "Engaged (%)"=rate_engaged, "Not at home (%)"=rate_not_home, "No property (%)"=rate_no_property)
           }
-        
-          #rename(ceo_performance_data(),
-          #       CEO = attempt_user,
-          #       Engaged = total_engaged,
-          #       "Not at home" = total_not_home,
-          #       "No property" = total_no_property,
-          #       Engaged = rate_engaged,
-          #       "Not at home" = rate_not_home,
-          #       "No property" = rate_no_property)
         },
         options = list(pageLength = TABLE_MAX_ROWS,
                        searching = FALSE,
                        bLengthChange = FALSE,
                        scrollY = 500,
+                       scrollX = TRUE,
                        scrollCollapse = TRUE,
+                       autoWidth = TRUE,
                        bInfo = FALSE,
-                       columnDefs = list(list(visible = FALSE, targets = 0))),
+                       columnDefs = list(list(visible = FALSE, targets = 0)),
+                       initComplete = JS("function(settings, json) {$(this.api().table().columns.adjust());}")),
         server = FALSE
       )
   

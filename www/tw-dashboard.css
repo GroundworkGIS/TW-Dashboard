@@ -1,0 +1,15 @@
+
+/* Copyright (c) 2016 Groundwork GIS
+ * http://groundworkgis.org.uk/
+ **/
+
+
+.box-transparent {
+    background-color: transparent;
+    border-top: none;
+    box-shadow: none;
+    padding-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}

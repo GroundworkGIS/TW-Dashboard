@@ -26,6 +26,10 @@ PMP_PERFORMANCE_DAILY_STATS <- reactiveValues(data=list())
 #  labels     = c("Engaged", "Not at home", "No property", "Engaged", "Not at home", "No property"))
 CEO_PERFORMANCE_CHART_LABELS <- reactiveValues(data=c( "Engaged", "Not at home", "No property", "Total"))
 
+# Palettes
+PALETTE_DEFAULT = c("#f03b20","#fecc5c","#ffffb2")
+PALETTE_REDS = c("#f03b20","#fecc5c","#ffffb2")
+
 # Refresh
 REFRESH_INTERVAL <- 60 #minutes
 #REFRESH_INTERVAL <- 3600 #seconds

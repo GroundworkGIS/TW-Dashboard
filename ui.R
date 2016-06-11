@@ -19,18 +19,12 @@ if (!DB) {
   
   
   # Custom CSS
-  CustomCss <- tags$head(tags$style(HTML('
-    .box-transparent {
-        background-color: transparent;
-        border-top: none;
-        box-shadow: none;
-        padding-bottom: 15px;
-        text-align: center;
-        font-weight: bold;
-        font-size: 20px;
-    }
-  ')))
-  
+  CustomCss <- tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "tw-dashboard.css"))
+
+  # Custom JS
+  CustomJs <- tags$head(
+    tags$script(type = "text/javascript", src = "tw-dashboard.js"))
   
   
   # Sidebar
@@ -46,7 +40,7 @@ if (!DB) {
       convertMenuItem(menuItem("CEO Performance", tabName = "tab1",
       
                                icon = icon("bar-chart"),
-                               dateRangeInput("ceo_performance_date_ctrl", "Date Range", start = STARTDATE, format="dd/mm/yyyy"),
+                               dateRangeInput("ceo_performance_date_ctrl", "Date Range", format="dd/mm/yyyy"),
                                selectInput("ceo_performance_borough_ctrl", "Filter Borough", choices = list("All")),
                                radioButtons("ceo_performance_view_ctrl", "Switch View", c("Values"= "values", "Ratios" = "ratios"))
                                ),tabName = "tab1"),
@@ -72,6 +66,7 @@ if (!DB) {
   # Body
   body <- dashboardBody(
     CustomCss,
+    CustomJs,
     tabItems(
 
       #Forward Planning
