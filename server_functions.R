@@ -128,3 +128,29 @@ setChart <- function(t, p="DEFAULT") {
   
   list(type = t, direction = a, position = b, palette = c)
 }
+
+
+getDailyData <- function(hourlyData) {
+  #hourly data summarised by date, user, borough
+  
+  hourlyData %>%
+  group_by(attempts_date, attempt_user, borough) %>%
+  summarise(
+    total_attempts               = sum(total_attempts),
+    total_not_home               = sum(total_not_home),
+    total_refuses_to_be_engaged  = sum(total_refuses_to_be_engaged),
+    total_refuses_meter          = sum(total_refuses_meter),
+    total_no_property_exists     = sum(total_no_property_exists),
+    total_engaged_not_interested = sum(total_engaged_not_interested),
+    total_engaged_form_completed = sum(total_engaged_form_completed),
+    total_f2f                    = sum(total_f2f)) %>%
+  as.data.frame()
+}
+
+
+getBoroughs <- function(data) {
+  (data %>%
+    select(borough) %>%
+    distinct()
+   )$borough
+} 

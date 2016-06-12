@@ -5,12 +5,12 @@
  */
 
 
-   
+// Fix data table resizing when toggling sidebar
 $(document).ready(function() {
     $('.sidebar-toggle').on( 'click', function (e) {
         $($.fn.dataTable.fnTables(true)).each(function(i, table) {
             var $table = $(table);
-              $table.dataTable().fnAdjustColumnSizing();
+            $table.dataTable().fnAdjustColumnSizing();
         });
     });
 });

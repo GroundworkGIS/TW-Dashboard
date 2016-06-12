@@ -4,6 +4,7 @@
 #
 
 library(shiny)
+library(shinyjs)
 library(markdown)
 library(shinydashboard)
 source("ui_config.R")
@@ -40,7 +41,7 @@ if (!DB) {
       convertMenuItem(menuItem("CEO Performance", tabName = "tab1",
       
                                icon = icon("bar-chart"),
-                               dateRangeInput("ceo_performance_date_ctrl", "Date Range", format="dd/mm/yyyy"),
+                               dateRangeInput("ceo_performance_date_ctrl", "Date Range", start = STARTDATE, format="dd/mm/yyyy"),
                                selectInput("ceo_performance_borough_ctrl", "Filter Borough", choices = list("All")),
                                radioButtons("ceo_performance_view_ctrl", "Switch View", c("Values"= "values", "Ratios" = "ratios"))
                                ),tabName = "tab1"),
@@ -67,6 +68,7 @@ if (!DB) {
   body <- dashboardBody(
     CustomCss,
     CustomJs,
+    useShinyjs(),
     tabItems(
 
       #Forward Planning
