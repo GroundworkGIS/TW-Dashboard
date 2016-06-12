@@ -49,7 +49,10 @@ if (!DB) {
       convertMenuItem(menuItem("Time Performance", tabName = "tab2",
                                
                                icon = icon("clock-o"),
-                               div()
+                               dateRangeInput("time_performance_date_ctrl", "Date Range", start = STARTDATE, format="dd/mm/yyyy"),
+                               selectInput("time_performance_dow_ctrl", "Filter Day of the Week", choices = DAYS_OF_WEEK),
+                               sliderInput("time_performance_hrs_ctrl", "Hours Range", min = MIN_HRS, max = MAX_HRS, value = DEFAULT_HRS),
+                               selectInput("time_performance_borough_ctrl", "Filter Borough", choices = list("All"))
                                ),tabName = "tab2"),
   
       
@@ -81,13 +84,12 @@ if (!DB) {
               fluidRow(tags$div(class = "box-transparent",
                   "CEO Performance"
               )),
-
               fluidRow(
-                box(title = "Performance Summary", 
-                    solidHeader = TRUE, status = "primary", DT::dataTableOutput("ceo_performance_performance_summary"), height=650+62),
+                box(title = "Summary", 
+                    solidHeader = FALSE, status = "primary", DT::dataTableOutput("ceo_performance_performance_summary"), height=650+62),
                 
-                box(title = "Performance Chart",
-                    solidHeader = TRUE, status = "primary", plotOutput("ceo_performance_performance_chart", height=650))
+                box(title = "Chart",
+                    solidHeader = FALSE, status = "primary", plotOutput("ceo_performance_performance_chart", height=650))
               )
       ),
 
