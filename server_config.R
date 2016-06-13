@@ -12,7 +12,7 @@
 #PG_PASSWORD <- "password"
 
 # Data from database rV(data, table name)
-PMP_PERFORMANCE_HOURLY <- reactiveValues(data=list(), source="sde.pmp_dashboard_performance_hourly")
+PMP_PERFORMANCE_HOURLY <- reactiveValues(data=list(), source="pmp_dashboard_performance_hourly")
 
 # Data
 PMP_BOROUGHS                <- reactiveValues(data=list())

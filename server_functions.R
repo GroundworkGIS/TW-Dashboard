@@ -18,6 +18,8 @@ pg_select <- function(d, w="") {
                              user=PG_USER,
                              password = PG_PASSWORD)
   
+  d <- paste(PG_SCHEMA, d, sep=".")
+  
   if (nchar(w) > 0) {
     w <- paste(" WHERE ", w, sep="")
   }
