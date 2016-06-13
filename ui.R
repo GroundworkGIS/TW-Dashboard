@@ -18,16 +18,14 @@ if (!DB) {
   ))))
 } else {
   
-  
+
   # Custom CSS
   CustomCss <- tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "tw-dashboard.css"),
-    tags$link(rel = "stylesheet", type = "text/css", href = "https://cdn.datatables.net/fixedcolumns/3.2.2/css/fixedColumns.bootstrap.min.css"))
+    tags$link(rel = "stylesheet", type = "text/css", href = "tw-dashboard.css"))
 
   # Custom JS
   CustomJs <- tags$head(
-    tags$script(type = "text/javascript", src = "tw-dashboard.js"),
-    tags$script(type = "text/javascript", src = "https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"))
+    tags$script(type = "text/javascript", src = "tw-dashboard.js"))
   
   
   # Sidebar
@@ -73,7 +71,7 @@ if (!DB) {
   body <- dashboardBody(
     CustomCss,
     CustomJs,
-    useShinyjs(),
+    #useShinyjs(),
     tabItems(
 
       #Forward Planning
