@@ -66,24 +66,6 @@ prep_barchart_data <- function(d, x, s=c(), l=C(), chart='GROUPED') {
     d <- select(d, one_of(c(x,s)))
   }
 
-  
-  # if (ratio == TRUE) {
-  #   m <- 0
-  #   for(i in 1:(length(d)-1)) {
-  #     
-  #     n <- i + 1
-  #     
-  #     
-  #     if (is.numeric(d[[i]])) {
-  #       m <- i
-  #     }
-  #     
-  #     if (is.numeric(d[[n]]) & m>0) {
-  #       d[[n]] <- d[[n]] + d[[m]] 
-  #     }
-  #   }
-  # }
-  
   d <- melt(d, id.vars = c(x),
         variable.name = "type")
   
@@ -110,3 +92,65 @@ percentage <- function(n, d=2) {
   # percentage maker
   round(n*100, digits=d)
 }
+
+
+
+xlimit <- function(c, v=0) {
+  # finds max or returns v
+  # c(vec)
+  # v(int)
+  
+  r <- max(c)
+  if (!is.finite(r)) r <- v
+  
+  #returns
+  r
+}
+
+
+
+setChart <- function(t, p="DEFAULT") {
+  # t type
+  # p palette name
+  
+  p <- paste("PALETTE_", toupper(p), sep = "")
+  c <- eval(parse(text = p))
+  
+  if (t == "GROUPED") {
+    a = 1
+    b = position_dodge()
+    c = rev(c)
+    
+  } else if (t == "STACKED") {
+    a = -1
+    b = position_stack()
+  }
+  
+  list(type = t, direction = a, position = b, palette = c)
+}
+
+
+getDailyData <- function(hourlyData) {
+  #hourly data summarised by date, user, borough
+  
+  hourlyData %>%
+  group_by(attempts_date, attempt_user, borough) %>%
+  summarise(
+    total_attempts               = sum(total_attempts),
+    total_not_home               = sum(total_not_home),
+    total_refuses_to_be_engaged  = sum(total_refuses_to_be_engaged),
+    total_refuses_meter          = sum(total_refuses_meter),
+    total_no_property_exists     = sum(total_no_property_exists),
+    total_engaged_not_interested = sum(total_engaged_not_interested),
+    total_engaged_form_completed = sum(total_engaged_form_completed),
+    total_f2f                    = sum(total_f2f)) %>%
+  as.data.frame()
+}
+
+
+getBoroughs <- function(data) {
+  (data %>%
+    select(borough) %>%
+    distinct()
+   )$borough
+} 

@@ -1,0 +1,26 @@
+
+/* Copyright (c) 2016 Groundwork GIS
+ * http://groundworkgis.org.uk/
+ **/
+
+
+.main-header .logo {
+  font-weight: bold;
+  background-image: url('texturebg.png');
+  font-family: 'Lato', 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+
+.navbar {
+  background-image: url('texturebg.png');
+}
+
+.box-transparent {
+    background-color: transparent;
+    border-top: none;
+    box-shadow: none;
+    padding-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Lato', 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+}
