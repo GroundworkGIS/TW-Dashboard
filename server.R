@@ -27,7 +27,7 @@ if (!DB) {
     PMP_PERFORMANCE_HOURLY$data <<- pg_select(PMP_PERFORMANCE_HOURLY$source)
     
     # PMP_PERFORMANCE_DAILY
-    PMP_PERFORMANCE_DAILY$data <<- getDailyData(PMP_PERFORMANCE_HOURLY$data)
+    PMP_PERFORMANCE_DAILY$data  <<- pg_select(PMP_PERFORMANCE_DAILY$source)
 
     # BOROUGHS
     PMP_BOROUGHS$data <<- getBoroughs(PMP_PERFORMANCE_DAILY$data)
@@ -122,6 +122,7 @@ if (!DB) {
                            CEO=attempt_user, "Engaged (%)"=rate_engaged, "Not at home (%)"=rate_not_home, "No property (%)"=rate_no_property, "Total"=total_attempts)
           }
         },
+        extensions = list('FixedColumns', 'Buttons'),
         options = list(pageLength = TABLE_MAX_ROWS,
                        searching = FALSE,
                        bLengthChange = FALSE,
@@ -131,6 +132,9 @@ if (!DB) {
                        autoWidth = TRUE,
                        bInfo = FALSE,
                        columnDefs = list(list(visible = FALSE, targets = 0)),
+                       fixedHeader = FALSE,
+                       buttons = c('excel'),
+                       fixedColumns = list(leftColumns = 2),
                        initComplete = JS("function(settings, json) {$(this.api().table().columns.adjust());}")),
         server = FALSE
       )

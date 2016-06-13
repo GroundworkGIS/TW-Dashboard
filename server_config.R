@@ -13,10 +13,10 @@
 
 # Data from database rV(data, table name)
 PMP_PERFORMANCE_HOURLY <- reactiveValues(data=list(), source="pmp_dashboard_performance_hourly")
+PMP_PERFORMANCE_DAILY  <- reactiveValues(data=list(), source="pmp_dashboard_performance_daily")
 
 # Data
 PMP_BOROUGHS                <- reactiveValues(data=list())
-PMP_PERFORMANCE_DAILY       <- reactiveValues(data=list())
 PMP_PERFORMANCE_DAILY_STATS <- reactiveValues(data=list())
 
 # Ceo performance options

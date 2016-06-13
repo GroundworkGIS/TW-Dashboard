@@ -1,4 +1,4 @@
-
+  
 # Copyright (c) 2016 Groundwork GIS
 # http://groundworkgis.org.uk/
 #
@@ -21,11 +21,13 @@ if (!DB) {
   
   # Custom CSS
   CustomCss <- tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "tw-dashboard.css"))
+    tags$link(rel = "stylesheet", type = "text/css", href = "tw-dashboard.css"),
+    tags$link(rel = "stylesheet", type = "text/css", href = "https://cdn.datatables.net/fixedcolumns/3.2.2/css/fixedColumns.bootstrap.min.css"))
 
   # Custom JS
   CustomJs <- tags$head(
-    tags$script(type = "text/javascript", src = "tw-dashboard.js"))
+    tags$script(type = "text/javascript", src = "tw-dashboard.js"),
+    tags$script(type = "text/javascript", src = "https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"))
   
   
   # Sidebar
