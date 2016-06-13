@@ -118,8 +118,8 @@ if (!DB) {
             data <- rename(select(ceo_performance_data(), attempt_user, total_engaged, total_not_home, total_no_property, total_attempts),
                            CEO=attempt_user, Engaged=total_engaged, "Not at home"=total_not_home, "No property"=total_no_property, "Total"=total_attempts)
           } else {
-            data <- rename(select(ceo_performance_data(), attempt_user, rate_engaged, rate_not_home, rate_no_property),
-                           CEO=attempt_user, "Engaged (%)"=rate_engaged, "Not at home (%)"=rate_not_home, "No property (%)"=rate_no_property)
+            data <- rename(select(ceo_performance_data(), attempt_user, rate_engaged, rate_not_home, rate_no_property, total_attempts),
+                           CEO=attempt_user, "Engaged (%)"=rate_engaged, "Not at home (%)"=rate_not_home, "No property (%)"=rate_no_property, "Total"=total_attempts)
           }
         },
         options = list(pageLength = TABLE_MAX_ROWS,
