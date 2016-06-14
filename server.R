@@ -4,6 +4,7 @@
 #
 
 library(RPostgreSQL)
+library(data.table)
 library(reshape2)
 library(ggplot2)
 library(shiny)
@@ -27,7 +28,7 @@ if (!DB) {
     PMP_PERFORMANCE_HOURLY$data <<- pg_select(PMP_PERFORMANCE_HOURLY$source)
     
     # PMP_PERFORMANCE_DAILY
-    PMP_PERFORMANCE_DAILY$data <<- getDailyData(PMP_PERFORMANCE_HOURLY$data)
+    PMP_PERFORMANCE_DAILY$data  <<- pg_select(PMP_PERFORMANCE_DAILY$source)
 
     # BOROUGHS
     PMP_BOROUGHS$data <<- getBoroughs(PMP_PERFORMANCE_DAILY$data)
@@ -59,6 +60,7 @@ if (!DB) {
         filterClause <- list(~attempts_date >= filterDateRange[1], ~attempts_date <= filterDateRange[2])
         if (filterborough != "All") filterClause <- append(filterClause, ~borough == filterborough)
         
+        #data
         PMP_PERFORMANCE_DAILY$data %>%
           filter_(.dots = filterClause) %>%
           group_by(attempt_user) %>%
@@ -113,15 +115,20 @@ if (!DB) {
       
       # Table: Performance summary
       output$ceo_performance_performance_summary <- DT::renderDataTable({
-          
+          data <- ceo_performance_data()
+        
           if (input$ceo_performance_view_ctrl == "values") {
-            data <- rename(select(ceo_performance_data(), attempt_user, total_engaged, total_not_home, total_no_property, total_attempts),
-                           CEO=attempt_user, Engaged=total_engaged, "Not at home"=total_not_home, "No property"=total_no_property, "Total"=total_attempts)
+            fields <- CEO_PERFORMANCE_SUMMARY_VALUES_FIELDS
+            labels <- CEO_PERFORMANCE_SUMMARY_VALUES_LABELS
+
           } else {
-            data <- rename(select(ceo_performance_data(), attempt_user, rate_engaged, rate_not_home, rate_no_property, total_attempts),
-                           CEO=attempt_user, "Engaged (%)"=rate_engaged, "Not at home (%)"=rate_not_home, "No property (%)"=rate_no_property, "Total"=total_attempts)
+            fields <- CEO_PERFORMANCE_SUMMARY_RATIOS_FIELDS
+            labels <- CEO_PERFORMANCE_SUMMARY_RATIOS_LABELS
           }
+          
+          setnames(select_(data, .dots = fields), old=fields, new=labels)
         },
+        #extensions = list('FixedColumns'),
         options = list(pageLength = TABLE_MAX_ROWS,
                        searching = FALSE,
                        bLengthChange = FALSE,

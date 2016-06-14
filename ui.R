@@ -1,4 +1,4 @@
-
+  
 # Copyright (c) 2016 Groundwork GIS
 # http://groundworkgis.org.uk/
 #
@@ -18,7 +18,7 @@ if (!DB) {
   ))))
 } else {
   
-  
+
   # Custom CSS
   CustomCss <- tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "tw-dashboard.css"))
@@ -71,7 +71,7 @@ if (!DB) {
   body <- dashboardBody(
     CustomCss,
     CustomJs,
-    useShinyjs(),
+    #useShinyjs(),
     tabItems(
 
       #Forward Planning
