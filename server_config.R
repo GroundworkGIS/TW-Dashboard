@@ -26,11 +26,11 @@ CEO_PERFORMANCE_CHART_VALUES_LABELS <- c( "Engaged", "Not at home", "No property
 CEO_PERFORMANCE_CHART_RATIOS_FIELDS <- c("rate_engaged",  "rate_not_home", "rate_no_property")
 CEO_PERFORMANCE_CHART_RATIOS_LABELS <- c( "Engaged (%)", "Not at home (%)", "No property (%)")
 
-CEO_PERFORMANCE_SUMMARY_VALUES_FIELDS <- NULL
-CEO_PERFORMANCE_SUMMARY_VALUES_LABELS <- NULL
+CEO_PERFORMANCE_SUMMARY_VALUES_FIELDS <- c("attempt_user", "total_engaged", "total_not_home", "total_no_property", "total_attempts")
+CEO_PERFORMANCE_SUMMARY_VALUES_LABELS <- c("CEO", "Engaged", "Not at home", "No property", "Total")
 
-CEO_PERFORMANCE_SUMMARY_RATIOS_FIELDS <- NULL
-CEO_PERFORMANCE_SUMMARY_RATIOS_LABELS <- NULL
+CEO_PERFORMANCE_SUMMARY_RATIOS_FIELDS <- c("attempt_user", "rate_engaged", "rate_not_home", "rate_no_property", "total_attempts")
+CEO_PERFORMANCE_SUMMARY_RATIOS_LABELS <- c("CEO", "Engaged (%)", "Not at home (%)", "No property (%)", "Total")
 
 # Palettes
 PALETTE_DEFAULT <- c("#f03b20","#fecc5c","#ffffb2")

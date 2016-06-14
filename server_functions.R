@@ -51,7 +51,7 @@ prep_barchart_data <- function(d, x, s=c(), l=C(), chart='GROUPED') {
   # d (data.frame), the data
   # x (string), x axis column name
   # s (vec), fields subset - must NOT include x
-  # d (vec), fields subset labels
+  # l (vec), fields subset labels
   # chart (string), type of chart: GROUPED, STACKED
   # returns data.frame(type,value)
   
@@ -84,8 +84,8 @@ prep_barchart_data <- function(d, x, s=c(), l=C(), chart='GROUPED') {
 
 
 
-rename_columns <- function(d, n) {
-  # rename column
+applyLabels <- function(d, n) {
+  # rename columns to labels
 }
 
 
