@@ -51,7 +51,7 @@ if (!DB) {
                                icon = icon("clock-o"),
                                dateRangeInput("time_performance_date_ctrl", "Date Range", start = STARTDATE, format="dd/mm/yyyy"),
                                selectInput("time_performance_dow_ctrl", "Filter Day of the Week", choices = DAYS_OF_WEEK),
-                               sliderInput("time_performance_hrs_ctrl", "Hours Range", min = MIN_HRS, max = MAX_HRS, value = DEFAULT_HRS),
+                               sliderInput("time_performance_hrs_ctrl", "Time Band", min = MIN_HRS, max = MAX_HRS, value = DEFAULT_HRS),
                                selectInput("time_performance_borough_ctrl", "Filter Borough", choices = list("All"))
                                ),tabName = "tab2"),
   
