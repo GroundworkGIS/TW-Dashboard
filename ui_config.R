@@ -19,8 +19,8 @@ TABLE_MAX_ROWS <- 15
 
 # Hours interval
 MIN_HRS <- 8
-MAX_HRS <- 20
-DEFAULT_HRS <- c(9,17)
+MAX_HRS <- 22
+DEFAULT_HRS <- c(10,20)
 
 # Days of the week
 DAYS_OF_WEEK = c('All', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday')

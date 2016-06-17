@@ -114,8 +114,8 @@ if (!DB) {
       })
       
       # Table: Performance summary
-      output$ceo_performance_performance_summary <- DT::renderDataTable({
-          data <- ceo_performance_data()
+      output$ceo_performance_performance_summary <- DT::renderDataTable(DT::datatable(
+          {data <- ceo_performance_data()
         
           if (input$ceo_performance_view_ctrl == "values") {
             fields <- CEO_PERFORMANCE_SUMMARY_VALUES_FIELDS
@@ -126,19 +126,19 @@ if (!DB) {
             labels <- CEO_PERFORMANCE_SUMMARY_RATIOS_LABELS
           }
           
-          setnames(select_(data, .dots = fields), old=fields, new=labels)
+          #setnames(select_(data, .dots = fields), old=fields, new=labels)
+          select_(data, .dots = fields)
         },
-        #extensions = list('FixedColumns'),
-        options = list(pageLength = TABLE_MAX_ROWS,
-                       searching = FALSE,
-                       bLengthChange = FALSE,
+        width = "100%",
+        extensions = 'FixedColumns',
+        rownames = FALSE,
+        colnames = labels,
+        options = list(dom = 'tp',
+                       FixedColumns = TRUE,
+                       pageLength = TABLE_MAX_ROWS,
                        scrollY = 500,
-                       scrollX = TRUE,
-                       scrollCollapse = TRUE,
                        autoWidth = TRUE,
-                       bInfo = FALSE,
-                       columnDefs = list(list(visible = FALSE, targets = 0)),
-                       initComplete = JS("function(settings, json) {$(this.api().table().columns.adjust());}")),
+                       initComplete = JS("function(settings, json) {$(this.api().table().columns.adjust());}"))),
         server = FALSE
       )
   
