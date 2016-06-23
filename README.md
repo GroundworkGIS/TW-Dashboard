@@ -16,9 +16,14 @@ install.packages(ggplot2)
 install.packages(shinyjs)
 install.packages(shiny)
 install.packages(dplyr)
-install.packages(shiny)
 
 #devtools
 install.packages('devtools')
 devtools::install_github('rstudio/DT')
+```
+
+Required files
+```{r}
+#database parms
+db.R
 ```
